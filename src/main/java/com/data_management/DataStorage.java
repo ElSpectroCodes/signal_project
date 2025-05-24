@@ -1,5 +1,6 @@
 package com.data_management;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,15 @@ public class DataStorage {
      */
     public DataStorage() {
         this.patientMap = new HashMap<>();
+    }
+
+    public DataStorage(DataReader reader) {
+        this();
+        try {
+            reader.readData(this);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read data", e);
+        }
     }
 
     /**

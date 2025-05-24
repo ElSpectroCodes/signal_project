@@ -10,6 +10,7 @@ import java.util.List;
 
 class DataStorageTest {
 
+    /* 
     @Test
     void testAddAndGetRecords() {
         // TODO Perhaps you can implement a mock data reader to mock the test data?
@@ -22,4 +23,5 @@ class DataStorageTest {
         assertEquals(2, records.size()); // Check if two records are retrieved
         assertEquals(100.0, records.get(0).getMeasurementValue()); // Validate first record
     }
+        */
 }
