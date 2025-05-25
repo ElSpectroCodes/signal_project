@@ -1,5 +1,7 @@
 package com.alerts.rules;
 
+//Old Week 3 code
+import com.alerts.Alert; 
 import com.alerts.AlertRule;
 import com.data_management.Patient;
 import com.data_management.PatientRecord;

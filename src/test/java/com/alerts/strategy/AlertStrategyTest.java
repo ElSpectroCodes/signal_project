@@ -59,13 +59,23 @@ class AlertStrategyTest {
     }
 
     @Test
-    void testHeartRateStrategy_TriggersOnECGSpike() {
-        Patient patient = buildPatientWithRecords("ECG", 0.8, 0.9, 0.95, 1.0, 1.05, 2.5);
-        AlertStrategy strategy = new HeartRateStrategy();
-        List<Alert> alerts = strategy.checkAlert(patient, 0, System.currentTimeMillis());
-        assertFalse(alerts.isEmpty());
-        assertTrue(alerts.get(0).getMessage().contains("ECG"));
-    }
+void testHeartRateStrategy_TriggersOnECGSpike() {
+    Patient patient = new Patient(1);
+    long now = System.currentTimeMillis();
+    patient.addRecord(0.9, "ECG", now);
+    patient.addRecord(0.9, "ECG", now + 1000);
+    patient.addRecord(0.9, "ECG", now + 2000);
+    patient.addRecord(0.9, "ECG", now + 3000);
+    patient.addRecord(0.9, "ECG", now + 4000);
+    patient.addRecord(2.0, "ECG", now + 5000); // spike
+
+    AlertStrategy strategy = new HeartRateStrategy();
+    List<Alert> alerts = strategy.checkAlert(patient, now, now + 6000);
+
+    assertFalse(alerts.isEmpty(), "Expected ECG spike to trigger alert");
+    assertTrue(alerts.get(0).getMessage().contains("ECG"));
+}
+
 
     @Test
     void testHeartRateStrategy_NoSpikeNoAlert() {
