@@ -6,11 +6,34 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executors;
 
+/**
+ * Implementation of the OutputStrategy interface that sends data through a TCP socket.
+ *
+ * <p> It starts a TCP socket on the given port and listens for a single client connection. 
+ * Once connected it sends streams to the client using a CSV format. 
+ *
+ * <p>Only one client connection is supported at a time in this implementation.
+ *
+ * <p>Example message format:
+ * <pre>
+ *     1,1716564300000,ECG,0.92
+ * </pre>
+ *   
+ * @author Nithessh Rajesh
+ */
+
+
 public class TcpOutputStrategy implements OutputStrategy {
 
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
+
+      /**
+     * Constructs the TCP output strategy and starts the server.
+     *
+     * @param port the TCP port to listen to incoming client 
+     */
 
     public TcpOutputStrategy(int port) {
         try {
@@ -31,6 +54,15 @@ public class TcpOutputStrategy implements OutputStrategy {
             e.printStackTrace();
         }
     }
+
+     /**
+     *  patient data is sent to the client using a CSV format.
+     *
+     * @param patientId the ID of the patient
+     * @param timestamp the time the data was generated 
+     * @param label     the label describing the type of data (e.g., ECG, BP)
+     * @param data      the actual patient data
+     */
 
     @Override
     public void output(int patientId, long timestamp, String label, String data) {

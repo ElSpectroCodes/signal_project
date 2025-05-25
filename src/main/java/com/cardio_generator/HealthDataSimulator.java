@@ -77,7 +77,7 @@ public class HealthDataSimulator {
      * Parses command-line arguments to configure patient count and output type.
      *
      * @param args The array of command-line arguments.
-     * @throws IOException If a file output directory needs to be created and fails.
+     * @throws IOException If a file output directory(file,websocket,TCP..) needs to be created and fails.
      */
 
     private static void parseArguments(String[] args) throws IOException {
