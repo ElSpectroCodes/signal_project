@@ -70,6 +70,7 @@ This project has all documentation under the documentation folder found under ma
  Tests:
    - Week3
    - Week4
+   - Week5
  UMLDiagrams 
  
 
