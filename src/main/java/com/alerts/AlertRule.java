@@ -1,6 +1,5 @@
 package com.alerts;
 
-import com.alerts.rules.Alert;
 import com.data_management.Patient;
 import java.util.List;
 

@@ -1,12 +1,6 @@
-package data_management;
+package com.data_management;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
-import com.data_management.DataStorage;
-import com.data_management.FileDataReader;
-
-import java.util.List;
 
 import java.io.*;
 import java.nio.file.*;
@@ -58,9 +52,10 @@ class FileDataReaderTest {
         reader.readData(mockStorage);
 
         // We expect 2 records added
-        assertEquals(2, mockStorage.addedData.size());
-        assertTrue(mockStorage.addedData.contains("123,1625097600000,HeartRate,72.5"));
-        assertTrue(mockStorage.addedData.contains("123,1625097660000,BloodPressure,120.0"));
+        List<String> added = mockStorage.addedData;
+        assertEquals(2, added.size());
+        assertTrue(added.contains("123,1625097600000,HeartRate,72.5"));
+        assertTrue(added.contains("123,1625097660000,BloodPressure,120.0"));
     }
 
     @Test
@@ -87,8 +82,9 @@ class FileDataReaderTest {
         reader.readData(mockStorage);
 
         // Only the first valid line should be added
-        assertEquals(1, mockStorage.addedData.size());
-        assertTrue(mockStorage.addedData.contains("123,1625097600000,HeartRate,72.5"));
+        List<String> added = mockStorage.addedData;
+        assertEquals(1, added.size());
+        assertTrue(added.contains("123,1625097600000,HeartRate,72.5"));
     }
 
     @Test
@@ -110,22 +106,25 @@ class FileDataReaderTest {
     }
 
     @Test
-    void testReadData_noFilesInDirectory() throws IOException {
-        // Create empty temp directory with no files
-        FileDataReader reader = new FileDataReader(tempDir.toString());
+void testReadData_noFilesInDirectory() throws IOException {
+    
+    Files.writeString(tempDir.resolve("ignore.me"), "this should not count");
 
-        DataStorage dummyStorage = new DataStorage() {
-            @Override
-            public void addPatientData(int patientId, double measurementValue, String recordType, long timestamp) {
-                // no-op
-            }
-        };
+    FileDataReader reader = new FileDataReader(tempDir.toString());
 
-        IOException thrown = assertThrows(IOException.class, () -> {
-            reader.readData(dummyStorage);
-        });
+    DataStorage dummyStorage = new DataStorage() {
+        @Override
+        public void addPatientData(int patientId, double measurementValue, String recordType, long timestamp) {
+            // no-op
+        }
+    };
 
-        assertTrue(thrown.getMessage().contains("No files"));
-    }
+    IOException thrown = assertThrows(IOException.class, () -> {
+        reader.readData(dummyStorage);
+    });
+
+    assertTrue(thrown.getMessage().contains("No data files"), "Should throw on directory without .txt/.csv/.log");
 }
 
+
+}

@@ -1,4 +1,3 @@
-// Strategy Pattern Interface
 package com.alerts.strategy;
 
 import com.alerts.Alert;

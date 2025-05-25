@@ -1,8 +1,6 @@
-package com.alerts.Alerts
+package com.alerts;
 
 import com.cardio_generator.outputs.OutputStrategy;
-import com.data_management.Patient;
-
 
 /**
  * Represents an alert triggered due to abnormal or critical patient data.
