@@ -11,4 +11,12 @@ public interface DataReader {
      * @throws IOException if there is an error reading the data
      */
     void readData(DataStorage dataStorage) throws IOException;
+
+    default void streamData(DataStorage storage) throws IOException {
+    throw new UnsupportedOperationException("Streaming not implemented");
+
+    
 }
+}
+
+

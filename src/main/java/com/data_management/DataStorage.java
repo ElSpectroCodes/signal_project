@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.alerts.AlertGenerator;
 import com.cardio_generator.outputs.ConsoleOutputStrategy;
-import com.cardio_generator.outputs.OutputStrategy;
+
 
 /**
  * Manages storage and retrieval of patient data within a healthcare monitoring
@@ -61,16 +61,29 @@ public class DataStorage {
     }
 
     public static void main(String[] args) {
-        // Use singleton to load and evaluate
-        DataStorage storage = DataStorage.getInstance();
-        // e.g. storage.load(new FileDataReader("output"));
+    DataStorage storage = DataStorage.getInstance();
 
-        OutputStrategy output = new ConsoleOutputStrategy();
-        AlertGenerator alerts = new AlertGenerator(output);
-
-        for (Patient p : storage.getAllPatients()) {
-            alerts.evaluateData(p);
-        }
+    WebSocketDataReader reader = new WebSocketDataReader("ws://localhost:8080"); // Adjust port
+    try {
+        reader.streamData(storage); // Start listening to WebSocket
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+
+    AlertGenerator alerts = new AlertGenerator(new ConsoleOutputStrategy());
+
+    // Periodic evaluation every 10 seconds
+    new Thread(() -> {
+        while (true) {
+            for (Patient p : storage.getAllPatients()) {
+                alerts.evaluateData(p);
+            }
+            try {
+                Thread.sleep(10_000); // 10 seconds
+            } catch (InterruptedException ignored) {}
+        }
+    }).start();
+}
+
 }
 
