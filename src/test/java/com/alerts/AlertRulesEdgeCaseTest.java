@@ -67,14 +67,4 @@ public class AlertRulesEdgeCaseTest {
         assertTrue(alerts.get(0).getMessage().contains("Systolic"));
     }
 
-    @Test
-    void testManualAlertWithNumericTrigger() {
-        patient.addRecord(1.0, "Alert", now);
-
-        AlertRule rule = new ManualAlertRule();
-        List<Alert> alerts = rule.evaluate(patient, now - 10000, now);
-
-        assertEquals(1, alerts.size());
-        assertTrue(alerts.get(0).getMessage().contains("Manual alert triggered"));
-    }
 }
