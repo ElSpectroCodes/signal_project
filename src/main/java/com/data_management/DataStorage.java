@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.alerts.AlertGenerator;
+import com.cardio_generator.outputs.ConsoleOutputStrategy;
+import com.cardio_generator.outputs.OutputStrategy;
 
 /**
  * Manages storage and retrieval of patient data within a healthcare monitoring
@@ -111,7 +114,9 @@ public class DataStorage {
         }
 
         // Initialize the AlertGenerator with the storage
-        AlertGenerator alertGenerator = new AlertGenerator(storage);
+        OutputStrategy outputStrategy = new ConsoleOutputStrategy(); 
+        AlertGenerator alertGenerator = new AlertGenerator(outputStrategy);
+
 
         // Evaluate all patients' data to check for conditions that may trigger alerts
         for (Patient patient : storage.getAllPatients()) {

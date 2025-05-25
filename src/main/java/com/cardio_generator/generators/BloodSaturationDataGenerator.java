@@ -4,6 +4,21 @@ import java.util.Random;
 
 import com.cardio_generator.outputs.OutputStrategy;
 
+/**
+ * Generates blood saturation levels for each patients.
+ *
+ * <p>This class produces blood oxygen saturation levels (SpO2) for each patient,
+ * Saturation values are restricted between 90% and 100% to make sure realistic values are generated.
+ *
+ * <p>Each patient is initialized with a baseline saturation between 95% and 100%.
+ * The generator then causes mild fluxtuations to simulate natural bilogical behavior. 
+ *
+ * 
+ * <p>Example output: {@code Patient ID: 6348120, Timestamp: 1716572300000, Label: Saturation, Data: 97%}
+ * 
+ * @author Nithessh Rajesh
+ */
+
 public class BloodSaturationDataGenerator implements PatientDataGenerator {
     private static final Random random = new Random();
     private int[] lastSaturationValues;
@@ -16,6 +31,13 @@ public class BloodSaturationDataGenerator implements PatientDataGenerator {
             lastSaturationValues[i] = 95 + random.nextInt(6); // Initializes with a value between 95 and 100
         }
     }
+
+      /**
+     * Generates and outputs a new saturation value for the specified patient.
+     *
+     * @param patientId      the ID of the patient
+     * @param outputStrategy the strategy used to output the data
+     */
 
     @Override
     public void generate(int patientId, OutputStrategy outputStrategy) {
