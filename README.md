@@ -66,10 +66,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Documentation
 
-This project has all documentation under the target folder:
- - Week3
- - Week4
- - UML 
+This project has all documentation under the documentation folder found under main:
+ Tests:
+   - Week3
+   - Week4
+ UMLDiagrams 
+ 
 
 ## Project members
 Student ID: i6348120
