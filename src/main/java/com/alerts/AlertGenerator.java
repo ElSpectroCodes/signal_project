@@ -2,45 +2,42 @@ package com.alerts;
 
 import com.cardio_generator.outputs.OutputStrategy;
 import com.data_management.Patient;
+import com.alerts.strategy.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-// Import all rule classes
-import com.alerts.rules.*;
 
 /**
  * The {@code AlertGenerator} class is responsible for evaluating patient data
  * and generating alerts based on predefined health rules. It uses a set of
- * {@link AlertRule} implementations to detect various conditions (e.g., critical blood pressure,
+ * {@link AlertStrategy} implementations to detect various conditions (e.g., critical blood pressure,
  * oxygen saturation drops, ECG anomalies).
  *
  * <p>It does not manage or access raw data directly; instead, it operates on individual
  * {@link com.data_management.Patient} objects and uses their recent records for analysis.
  *
- * <p>This design supports the Open/Closed Principle by allowing new alert rules to be added
+ * <p>This design supports the Open/Closed Principle by allowing new alert strategies to be added
  * without modifying the AlertGenerator logic.
  */
 public class AlertGenerator {
-    private final List<AlertRule> rules;
+    private final List<AlertStrategy> strategies;
     private final OutputStrategy outputStrategy;
 
     /**
      * Constructs an {@code AlertGenerator} with the specified output strategy.
-     * Initializes all alert rules.
+     * Initializes all alert strategies.
      *
      * @param outputStrategy how the alerts should be emitted
      */
     public AlertGenerator(OutputStrategy outputStrategy) {
         this.outputStrategy = outputStrategy;
-        this.rules = Arrays.asList(
-                new BloodPressureTrendRule(),
-                new BloodPressureThresholdRule(),
-                new SaturationAlertRule(),
-                new RapidDropRule(),
-                new HypotensiveHypoxemiaRule(),
-                new ECGAnomalyRule(),
-                new ManualAlertRule()
+        this.strategies = Arrays.asList(
+                new BloodPressureStrategy(),
+                new OxygenSaturationStrategy(),
+                new HeartRateStrategy(),
+                new HypotensiveHypoxemiaStrategy(),
+                new ManualAlertStrategy()
         );
     }
 
@@ -55,8 +52,8 @@ public class AlertGenerator {
         long now = System.currentTimeMillis();
         long start = now - 10 * 60 * 1000; // last 10 minutes
 
-        for (AlertRule rule : rules) {
-            List<Alert> alerts = rule.evaluate(patient, start, now);
+        for (AlertStrategy strategy : strategies) {
+            List<Alert> alerts = strategy.checkAlert(patient, start, now);
             for (Alert alert : alerts) {
                 triggerAlert(alert);
             }
